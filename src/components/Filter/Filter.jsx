@@ -1,7 +1,7 @@
 
-export const Filter = ({filter, setFilter}) => {
+export const Filter = ({filter, changeFilter}) => {
     const handleFilterChange = e => {
-        setFilter(e.target.value)
+        changeFilter(e.target.value)
     }
   return (
     <>

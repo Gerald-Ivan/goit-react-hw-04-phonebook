@@ -1,29 +1,34 @@
-import { Component } from "react";
+import { useState } from "react";
 import { nanoid } from "nanoid";
 import css from './contactForm.module.css'
-export class ContactForm extends Component {
-    state = {
-        name: '',
-        number: '',
-    
-      }
-      handleChangeName = (e) => {
-        this.setState({
-          name: e.target.value,
-        });
+import { PropTypes } from 'prop-types'
+
+export const ContactForm = ({addContact, contacts }) => {
+    // state = {
+    //     name: '',
+    //     number: '',
+    //   }
+    const [name, setName] = useState('');
+    const [ number, setNumber] = useState('');
+
+    const handleChangeName = (e) => {
+      setName(e.target.value)
+        // this.setState({
+        //   name: e.target.value,
+        // });
         
       }
-      handleChangeNumber = (e) => {
-        this.setState({
-          number: e.target.value,
-        });
+    const handleChangeNumber = (e) => {
+      setNumber(e.target.value)
+        // this.setState({
+        //   number: e.target.value,
+        // });
       
       }
-      handleSubmit = (e) => {
-        e.preventDefault();
-        const { number, name } = this.state;
-        const { addContact, contacts } = this.props
+    const handleSubmit = (e) => {
 
+        e.preventDefault();
+        // const { number, name } = this.state;
         if (name.trim() === '' || number.trim() === '') {
           return;
         }
@@ -41,16 +46,17 @@ export class ContactForm extends Component {
         number: number.trim(),
        });
 
-       this.setState({ name: '', number: '' });
+       setName('');
+       setNumber('');
+      //  this.setState({ name: '', number: '' });
       }
    
 
-  render() {
-      const {number, name} = this.state;
+      // const {number, name} = this.state;
     return (
       <>
       <h1>Phonebook</h1>
-       <form className={css.contactForm} onSubmit={this.handleSubmit}>
+       <form className={css.contactForm} onSubmit={handleSubmit}>
         {/* name */}
       <label className={css.formLabel}>
         <p>Name</p>
@@ -61,7 +67,7 @@ export class ContactForm extends Component {
         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan."
         required
         value={name}
-        onChange={this.handleChangeName}
+        onChange={handleChangeName}
   
         />     
       </label>
@@ -76,7 +82,7 @@ export class ContactForm extends Component {
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
         required
         value={number}
-        onChange={this.handleChangeNumber}
+        onChange={handleChangeNumber}
         />
       </label>
       {/* submit */}
@@ -86,5 +92,16 @@ export class ContactForm extends Component {
       <h2>Contact</h2>
       </>
     )
-  }
+  
 }
+
+ContactForm.propTypes = {
+  addContact: PropTypes.func.isRequired,
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+};
